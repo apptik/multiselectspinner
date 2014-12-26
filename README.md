@@ -9,7 +9,7 @@ Example
 
 * specify in your layout
 ```xml
-    <org.djodjo.widget.MultiSelectSpinner
+    <org.djodjo.widget.multiselectspinner.MultiSelectSpinner
         android:id="@+id/multiselectSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
