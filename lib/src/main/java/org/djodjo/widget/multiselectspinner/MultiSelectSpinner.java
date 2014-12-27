@@ -260,4 +260,12 @@ public class MultiSelectSpinner extends Spinner implements
         return this;
     }
 
+    public MultiSelectSpinner selectItem(int item, boolean set) {
+        if(item>=selected.length) {
+            throw new ArrayIndexOutOfBoundsException("Item number is more than available items");
+        }
+        selected[item] = set;
+        return  this;
+    }
+
 }
