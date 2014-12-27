@@ -210,7 +210,7 @@ public class MultiSelectSpinner extends Spinner implements
 
 
     public MultiSelectSpinner setItems(List<String> items, String allCheckedText, String allUncheckedText,
-                         MultiSpinnerListener listener) {
+                                       MultiSpinnerListener listener) {
         this.items = items;
         this.allCheckedText = allCheckedText;
         this.allUncheckedText = allUncheckedText;
@@ -265,6 +265,27 @@ public class MultiSelectSpinner extends Spinner implements
             throw new ArrayIndexOutOfBoundsException("Item number is more than available items");
         }
         selected[item] = set;
+        // refresh text on spinner
+        StringBuffer spinnerBuffer = new StringBuffer();
+        for (int i = 0; i < items.size(); i++) {
+            if (selected[i] == true) {
+                spinnerBuffer.append(items.get(i));
+                spinnerBuffer.append(", ");
+            }
+        }
+        String spinnerText;
+
+        spinnerText = spinnerBuffer.toString();
+        if (spinnerText.length() > 2)
+            spinnerText = spinnerText.substring(0, spinnerText.length() - 2);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
+                android.R.layout.simple_spinner_item,
+                new String[] { spinnerText });
+        setAdapter(adapter);
+        if(listener!=null) {
+            listener.onItemsSelected(selected);
+        }
         return  this;
     }
 
