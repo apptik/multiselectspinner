@@ -283,9 +283,6 @@ public class MultiSelectSpinner extends Spinner implements
                 android.R.layout.simple_spinner_item,
                 new String[] { spinnerText });
         setAdapter(adapter);
-        if(listener!=null) {
-            listener.onItemsSelected(selected);
-        }
         return  this;
     }
 
