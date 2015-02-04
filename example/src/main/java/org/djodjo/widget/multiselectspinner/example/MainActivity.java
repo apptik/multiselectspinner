@@ -21,7 +21,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 
 import org.djodjo.widget.multiselectspinner.MultiSelectSpinner;
 
@@ -61,9 +60,6 @@ public class MainActivity extends ActionBarActivity {
         ArrayAdapter<String> adapter4 = new ArrayAdapter <String>(this, android.R.layout.simple_list_item_activated_1, options);
         ArrayAdapter<String> adapter5 = new ArrayAdapter <String>(this, R.layout.custom_item, options);
 
-        Spinner nSpinner = (Spinner) findViewById(R.id.normalSpinner);
-        nSpinner.setAdapter(adapter5);
-
 
         multiSelectSpinner2
                 .setListAdapter(adapter2, "All Types", "none selected", new MultiSelectSpinner.MultiSpinnerListener() {
@@ -81,6 +77,7 @@ public class MainActivity extends ActionBarActivity {
                     }
                 })
                 .setSelectAll(true)
+                .setTitle(R.string.title)
                 .setMinSelectedItems(1);
 
         multiSelectSpinner4
@@ -90,6 +87,7 @@ public class MainActivity extends ActionBarActivity {
                     }
                 })
                 .setSelectAll(true)
+                .setTitle(getResources().getString(R.string.title))
                 .setMinSelectedItems(1);
 
         multiSelectSpinner5
@@ -99,6 +97,7 @@ public class MainActivity extends ActionBarActivity {
                     }
                 })
                 .setSelectAll(true)
+                .setTitle("Custom Types Selector")
                 .setMinSelectedItems(1);
 
 

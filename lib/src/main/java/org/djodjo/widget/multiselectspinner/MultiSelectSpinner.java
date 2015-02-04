@@ -45,6 +45,7 @@ public class MultiSelectSpinner extends Spinner implements
     protected boolean selectAll;
     protected int minSelectedItems =0;
     protected int maxSelectedItems = Integer.MAX_VALUE;
+    protected String title = null;
 
 
     public MultiSelectSpinner(Context context) {
@@ -164,6 +165,7 @@ public class MultiSelectSpinner extends Spinner implements
     @Override
     public boolean performClick() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle(title);
         builder.setOnCancelListener(this);
         builder.setPositiveButton(android.R.string.ok,
                 new DialogInterface.OnClickListener() {
@@ -212,6 +214,15 @@ public class MultiSelectSpinner extends Spinner implements
         return false;
     }
 
+    public MultiSelectSpinner setTitle(int stringResource) {
+        this.title = getResources().getString(stringResource);
+        return this;
+    }
+
+    public MultiSelectSpinner setTitle(String title) {
+        this.title = title;
+        return this;
+    }
 
     public MultiSelectSpinner setItems(List<String> items, String allCheckedText, String allUncheckedText,
                                        MultiSpinnerListener listener) {
