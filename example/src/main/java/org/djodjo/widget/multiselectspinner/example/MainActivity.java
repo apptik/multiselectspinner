@@ -16,10 +16,16 @@
 
 package org.djodjo.widget.multiselectspinner.example;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+
+import org.djodjo.widget.multiselectspinner.MultiSelectSpinner;
+
+import java.util.ArrayList;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -28,6 +34,75 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ArrayList<String> options = new ArrayList<>();
+        options.add("1");
+        options.add("2");
+        options.add("3");
+        options.add("A");
+        options.add("B");
+        options.add("C");
+
+
+        MultiSelectSpinner multiSelectSpinner1 = (MultiSelectSpinner) findViewById(R.id.multiselectSpinner1);
+        multiSelectSpinner1.setItems(options, "All types", "none selected", new MultiSelectSpinner.MultiSpinnerListener() {
+            @Override
+            public void onItemsSelected(boolean[] selected) {
+
+            }
+        }).setSelectAll(false);
+
+        MultiSelectSpinner multiSelectSpinner2 = (MultiSelectSpinner) findViewById(R.id.multiselectSpinner2);
+        MultiSelectSpinner multiSelectSpinner3 = (MultiSelectSpinner) findViewById(R.id.multiselectSpinner3);
+        MultiSelectSpinner multiSelectSpinner4 = (MultiSelectSpinner) findViewById(R.id.multiselectSpinner4);
+        MultiSelectSpinner multiSelectSpinner5 = (MultiSelectSpinner) findViewById(R.id.multiselectSpinner5);
+        ArrayAdapter<String> adapter2 = new ArrayAdapter <String>(this, android.R.layout.simple_list_item_multiple_choice, options);
+        ArrayAdapter<String> adapter3 = new ArrayAdapter <String>(this, android.R.layout.simple_list_item_checked, options);
+        ArrayAdapter<String> adapter4 = new ArrayAdapter <String>(this, android.R.layout.simple_list_item_activated_1, options);
+        ArrayAdapter<String> adapter5 = new ArrayAdapter <String>(this, R.layout.custom_item, options);
+
+        Spinner nSpinner = (Spinner) findViewById(R.id.normalSpinner);
+        nSpinner.setAdapter(adapter5);
+
+
+        multiSelectSpinner2
+                .setListAdapter(adapter2, "All Types", "none selected", new MultiSelectSpinner.MultiSpinnerListener() {
+                    @Override
+                    public void onItemsSelected(boolean[] checkedItems) {
+                    }
+                })
+                .setSelectAll(true)
+                .setMinSelectedItems(1);
+
+        multiSelectSpinner3
+                .setListAdapter(adapter3, "All Types", "none selected", new MultiSelectSpinner.MultiSpinnerListener() {
+                    @Override
+                    public void onItemsSelected(boolean[] checkedItems) {
+                    }
+                })
+                .setSelectAll(true)
+                .setMinSelectedItems(1);
+
+        multiSelectSpinner4
+                .setListAdapter(adapter4, "All Types", "none selected", new MultiSelectSpinner.MultiSpinnerListener() {
+                    @Override
+                    public void onItemsSelected(boolean[] checkedItems) {
+                    }
+                })
+                .setSelectAll(true)
+                .setMinSelectedItems(1);
+
+        multiSelectSpinner5
+                .setListAdapter(adapter5, "All Types", "none selected", new MultiSelectSpinner.MultiSpinnerListener() {
+                    @Override
+                    public void onItemsSelected(boolean[] checkedItems) {
+                    }
+                })
+                .setSelectAll(true)
+                .setMinSelectedItems(1);
+
+
+
     }
 
 

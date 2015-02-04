@@ -55,8 +55,12 @@ public class MultiSelectSpinner extends Spinner implements
         super(context, attrs);
     }
 
-    public MultiSelectSpinner(Context context, AttributeSet attrs, int defStyle, int styleRes) {
+    public MultiSelectSpinner(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+    }
+
+    public MultiSelectSpinner(Context context, AttributeSet attrs, int defStyle, int styleRes) {
+        super(context, attrs, defStyle, styleRes);
     }
 
     public boolean[] getSelected() {

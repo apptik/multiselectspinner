@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Copyright (C) 2014 Kalin Maldzhanski
   ~
@@ -14,14 +15,13 @@
   ~ limitations under the License.
   -->
 
-<resources>
-    <string name="app_name">Example</string>
-
-    <string name="basic_example">basic example</string>
-    <string name="adapter_example2">adapter example 1</string>
-    <string name="adapter_example3">adapter example 2</string>
-    <string name="adapter_example4">adapter example 3</string>
-    <string name="custom_adapter_example">custom adapter example</string>
-
-    <string name="action_settings">Settings</string>
-</resources>
+<CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/text1"
+    android:layout_width="match_parent"
+    android:layout_height="?android:attr/listPreferredItemHeightLarge"
+    android:textAppearance="?android:attr/textAppearanceListItem"
+    android:gravity="center_vertical"
+    android:checkMark="?android:attr/textCheckMark"
+    android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
+    android:paddingRight="?android:attr/listPreferredItemPaddingRight"
+    />
