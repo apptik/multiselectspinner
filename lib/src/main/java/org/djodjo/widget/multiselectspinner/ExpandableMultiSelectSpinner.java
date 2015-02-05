@@ -34,6 +34,26 @@ public class ExpandableMultiSelectSpinner extends BaseMultiSelectSpinner {
 
     private LinkedHashMap<String, List<String>> mapItems =  new LinkedHashMap<>();
     private ExpandableListView myList;
+    private int expandableItemLayout=android.R.layout.simple_expandable_list_item_1;
+    private int choiceItemLayout=android.R.layout.simple_list_item_multiple_choice;
+
+    public int getExpandableItemLayout() {
+        return expandableItemLayout;
+    }
+
+    public ExpandableMultiSelectSpinner setExpandableItemLayout(int expandableItemLayout) {
+        this.expandableItemLayout = expandableItemLayout;
+        return this;
+    }
+
+    public int getChoiceItemLayout() {
+        return choiceItemLayout;
+    }
+
+    public ExpandableMultiSelectSpinner setChoiceItemLayout(int choiceItemLayout) {
+        this.choiceItemLayout = choiceItemLayout;
+        return this;
+    }
 
     public ExpandableMultiSelectSpinner(Context context) {
         super(context);
@@ -98,6 +118,7 @@ public class ExpandableMultiSelectSpinner extends BaseMultiSelectSpinner {
 
 
 
+        //must check item ourselves
         myList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
@@ -110,6 +131,7 @@ public class ExpandableMultiSelectSpinner extends BaseMultiSelectSpinner {
                 return true;
             }
         });
+
         //must enable selection when group expands again -- baaad "expandable" listview
         myList.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             @Override
@@ -123,7 +145,9 @@ public class ExpandableMultiSelectSpinner extends BaseMultiSelectSpinner {
             }
         });
 
-        myList.setAdapter(new HashMapListAdapter<String>(mapItems));
+
+
+        myList.setAdapter(new HashMapListAdapter<String>(mapItems, expandableItemLayout, choiceItemLayout));
 
 
 

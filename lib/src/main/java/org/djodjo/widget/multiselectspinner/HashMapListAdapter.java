@@ -29,8 +29,31 @@ import java.util.List;
 public class HashMapListAdapter<T> extends BaseExpandableListAdapter {
 
     LinkedHashMap<String, List<T>> items =  new LinkedHashMap<>();
-    public HashMapListAdapter(LinkedHashMap<String, List<T>> items) {
+    private int expandableItemLayout;
+    private int choiceItemLayout;
+
+    public int getExpandableItemLayout() {
+        return expandableItemLayout;
+    }
+
+    public HashMapListAdapter setExpandableItemLayout(int expandableItemLayout) {
+        this.expandableItemLayout = expandableItemLayout;
+        return this;
+    }
+
+    public int getChoiceItemLayout() {
+        return choiceItemLayout;
+    }
+
+    public HashMapListAdapter setChoiceItemLayout(int choiceItemLayout) {
+        this.choiceItemLayout = choiceItemLayout;
+        return this;
+    }
+
+    public HashMapListAdapter(LinkedHashMap<String, List<T>> items, int expandableItemLayout, int choiceItemLayout) {
         this.items = items;
+        this.expandableItemLayout = expandableItemLayout;
+        this.choiceItemLayout = choiceItemLayout;
     }
 
     @Override
@@ -75,7 +98,7 @@ public class HashMapListAdapter<T> extends BaseExpandableListAdapter {
         if (v == null) {
             LayoutInflater inflater = (LayoutInflater)parent.getContext().getSystemService
                     (Context.LAYOUT_INFLATER_SERVICE);
-            v = inflater.inflate(android.R.layout.simple_expandable_list_item_1, parent, false);
+            v = inflater.inflate(expandableItemLayout, parent, false);
         }
 
         TextView groupName = (TextView) v.findViewById(android.R.id.text1);
@@ -91,7 +114,7 @@ public class HashMapListAdapter<T> extends BaseExpandableListAdapter {
         if (v == null) {
             LayoutInflater inflater = (LayoutInflater)parent.getContext().getSystemService
                     (Context.LAYOUT_INFLATER_SERVICE);
-            v = inflater.inflate(android.R.layout.simple_list_item_multiple_choice, parent, false);
+            v = inflater.inflate(choiceItemLayout, parent, false);
         }
 
         TextView groupName = (TextView) v.findViewById(android.R.id.text1);
