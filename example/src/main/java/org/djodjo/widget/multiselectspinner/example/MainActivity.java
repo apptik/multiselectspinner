@@ -22,9 +22,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 
+import org.djodjo.widget.multiselectspinner.ExpandableMultiSelectSpinner;
 import org.djodjo.widget.multiselectspinner.MultiSelectSpinner;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -44,12 +47,17 @@ public class MainActivity extends ActionBarActivity {
 
 
         MultiSelectSpinner multiSelectSpinner1 = (MultiSelectSpinner) findViewById(R.id.multiselectSpinner1);
-        multiSelectSpinner1.setItems(options, "All types", "none selected", new MultiSelectSpinner.MultiSpinnerListener() {
-            @Override
-            public void onItemsSelected(boolean[] selected) {
+        multiSelectSpinner1.setItems(options)
 
-            }
-        }).setSelectAll(false);
+                .setListener(new MultiSelectSpinner.MultiSpinnerListener() {
+                    @Override
+                    public void onItemsSelected(boolean[] selected) {
+
+                    }
+                })
+                .setAllCheckedText("All types")
+                .setAllUncheckedText("none selected")
+                .setSelectAll(false);
 
         MultiSelectSpinner multiSelectSpinner2 = (MultiSelectSpinner) findViewById(R.id.multiselectSpinner2);
         MultiSelectSpinner multiSelectSpinner3 = (MultiSelectSpinner) findViewById(R.id.multiselectSpinner3);
@@ -62,45 +70,90 @@ public class MainActivity extends ActionBarActivity {
 
 
         multiSelectSpinner2
-                .setListAdapter(adapter2, "All Types", "none selected", new MultiSelectSpinner.MultiSpinnerListener() {
+                .setListAdapter(adapter2)
+
+                .setListener(new MultiSelectSpinner.MultiSpinnerListener() {
                     @Override
-                    public void onItemsSelected(boolean[] checkedItems) {
+                    public void onItemsSelected(boolean[] selected) {
+
                     }
                 })
+                .setAllCheckedText("All types")
+                .setAllUncheckedText("none selected")
                 .setSelectAll(true)
                 .setMinSelectedItems(1);
 
         multiSelectSpinner3
-                .setListAdapter(adapter3, "All Types", "none selected", new MultiSelectSpinner.MultiSpinnerListener() {
+                .setListAdapter(adapter3)
+
+                .setListener(new MultiSelectSpinner.MultiSpinnerListener() {
                     @Override
-                    public void onItemsSelected(boolean[] checkedItems) {
+                    public void onItemsSelected(boolean[] selected) {
+
                     }
                 })
+                .setAllCheckedText("All types")
+                .setAllUncheckedText("none selected")
                 .setSelectAll(true)
                 .setTitle(R.string.title)
                 .setMinSelectedItems(1);
 
         multiSelectSpinner4
-                .setListAdapter(adapter4, "All Types", "none selected", new MultiSelectSpinner.MultiSpinnerListener() {
+                .setListAdapter(adapter4)
+
+                .setListener(new MultiSelectSpinner.MultiSpinnerListener() {
                     @Override
-                    public void onItemsSelected(boolean[] checkedItems) {
+                    public void onItemsSelected(boolean[] selected) {
+
                     }
                 })
+                .setAllCheckedText("All types")
+                .setAllUncheckedText("none selected")
                 .setSelectAll(true)
                 .setTitle(getResources().getString(R.string.title))
                 .setMinSelectedItems(1);
 
         multiSelectSpinner5
-                .setListAdapter(adapter5, "All Types", "none selected", new MultiSelectSpinner.MultiSpinnerListener() {
+                .setListAdapter(adapter5)
+                .setListener(new MultiSelectSpinner.MultiSpinnerListener() {
                     @Override
-                    public void onItemsSelected(boolean[] checkedItems) {
+                    public void onItemsSelected(boolean[] selected) {
+
                     }
                 })
+                .setAllCheckedText("All types")
+                .setAllUncheckedText("none selected")
                 .setSelectAll(true)
                 .setTitle("Custom Types Selector")
                 .setMinSelectedItems(1);
 
 
+
+        ExpandableMultiSelectSpinner multiSelectSpinner6 = (ExpandableMultiSelectSpinner) findViewById(R.id.multiselectSpinner6);
+        LinkedHashMap<String, List<String>> items =  new LinkedHashMap<>();
+        ArrayList<String> items1 = new ArrayList<>();
+        items1.add("A");items1.add("B");items1.add("C");items1.add("D");items1.add("E");
+        ArrayList<String> items2 = new ArrayList<>();
+        items2.add("1");items2.add("2");items2.add("3");items2.add("4");items2.add("5");
+
+        items.put("Abc", items1);
+        items.put("123", items2);
+        multiSelectSpinner6.setItems(items)
+//                .setListAdapter(adapter5, "All Types", "none selected",
+//                        new MultiSelectSpinner.MultiSpinnerListener() {
+//                    @Override
+//                    public void onItemsSelected(boolean[] checkedItems) {
+//                    }
+//                })
+               //
+                .setAllCheckedText("All types")
+                .setAllUncheckedText("none selected")
+
+               // .setSelectAll(true)
+                .setTitle("Select Types from Groups")
+
+
+        ;
 
     }
 

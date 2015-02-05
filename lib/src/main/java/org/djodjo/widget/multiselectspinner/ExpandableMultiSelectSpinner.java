@@ -1,0 +1,200 @@
+/*
+ * Copyright (C) 2015 Kalin Maldzhanski
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.djodjo.widget.multiselectspinner;
+
+
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.util.AttributeSet;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ExpandableListView;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+
+public class ExpandableMultiSelectSpinner extends BaseMultiSelectSpinner {
+
+    private LinkedHashMap<String, List<String>> mapItems =  new LinkedHashMap<>();
+    private ExpandableListView myList;
+
+    public ExpandableMultiSelectSpinner(Context context) {
+        super(context);
+    }
+
+    public ExpandableMultiSelectSpinner(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public ExpandableMultiSelectSpinner(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+    }
+
+    public ExpandableMultiSelectSpinner(Context context, AttributeSet attrs, int defStyle, int styleRes) {
+        super(context, attrs, defStyle, styleRes);
+    }
+
+
+    public ExpandableMultiSelectSpinner setItems(LinkedHashMap<String, List<String>> items) {
+        this.mapItems = items;
+        this.items = new ArrayList<>();
+        for(List<String> its:mapItems.values()) {
+            for(String it:its) {
+                this.items.add(it);
+            }
+        }
+
+        // all selected by default
+        selected = new boolean[this.items.size()];
+        if(selectAll) {
+            for (int i = 0; i < selected.length; i++) {
+                selected[i] = true;
+            }
+        }
+
+        // all text on the spinner
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getContext(),
+                android.R.layout.simple_spinner_item, new String[] { (isSelectAll())?allCheckedText:allUncheckedText });
+        setAdapter(spinnerAdapter);
+
+        return this;
+    }
+
+    @Override
+    public boolean performClick() {
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle(title);
+        builder.setOnCancelListener(this);
+        builder.setPositiveButton(android.R.string.ok,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                }
+        );
+
+        myList  = new ExpandableListView(getContext());
+        myList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+
+
+
+        myList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                // int position = groupPosition*(items.size() + 1) + childPosition + 1;
+                int position = myList.getFlatListPosition(ExpandableListView.getPackedPositionForChild(groupPosition, childPosition));
+                //Log.d("jtest", "jtest - pos: " + position+", gp: " + groupPosition + ", chp: " + childPosition + ", id: " + id);
+
+                myList.setItemChecked(position, !myList.isItemChecked(position));
+                selected[getFlatArrPos(groupPosition, childPosition)] = !selected[getFlatArrPos(groupPosition, childPosition)];
+                return true;
+            }
+        });
+        //must enable selection when group expands again -- baaad "expandable" listview
+        myList.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                List<String> gItems = mapItems.values().toArray(new List[0])[groupPosition];
+                for(int i=0;i<gItems.size();i++) {
+                    int position1 = myList.getFlatListPosition(ExpandableListView.getPackedPositionForChild(groupPosition, i));
+                    int position2 =  getFlatArrPos(groupPosition, i);
+                    myList.setItemChecked(position1, selected[position2]);
+                }
+            }
+        });
+
+        myList.setAdapter(new HashMapListAdapter<String>(mapItems));
+
+
+
+        builder.setView(myList);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        int id = -1;
+        int gid = -1;
+        for(List<String> its:mapItems.values()) {
+            gid++;
+            //group must be expanded to set the value
+            myList.expandGroup(gid);
+            int chid = -1;
+            for(String it:its) {
+                id++;
+                chid++;
+                int position = myList.getFlatListPosition(ExpandableListView.getPackedPositionForChild(gid, chid));
+                //Log.d("jtest", "jtest - pos: " + position + ", id: " + id + ", val: " + selected[id]);
+                myList.setItemChecked(position, selected[id]);
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        // refresh text on spinner
+
+        String spinnerText;
+        //must have at least one expanded group to get getCheckedItemCount right -- baad "expandable" listview
+        myList.expandGroup(0);
+        if(myList.getCheckedItemCount()==selected.length) {
+            spinnerText = allCheckedText;
+        } else if(myList.getCheckedItemCount()==0) {
+            spinnerText = allUncheckedText;
+        } else {
+            StringBuffer spinnerBuffer = new StringBuffer();
+            for (int i = 0; i < items.size(); i++) {
+                if (selected[i] == true) {
+                    spinnerBuffer.append(items.get(i));
+                    spinnerBuffer.append(", ");
+                }
+            }
+            spinnerText = spinnerBuffer.toString();
+            if (spinnerText.length() > 2)
+                spinnerText = spinnerText.substring(0, spinnerText.length() - 2);
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
+                android.R.layout.simple_spinner_item,
+                new String[] { spinnerText });
+        setAdapter(adapter);
+        if(listener!=null) {
+            listener.onItemsSelected(selected);
+        }
+    }
+
+    private int getFlatArrPos(int group, int child) {
+       int id = -1;
+        int gid = -1;
+
+            for(List<String> its:mapItems.values()) {
+                if(gid==group-1) break;
+                id+=its.size();
+                gid++;
+            }
+
+        id +=child + 1;
+        return id;
+    }
+
+
+}

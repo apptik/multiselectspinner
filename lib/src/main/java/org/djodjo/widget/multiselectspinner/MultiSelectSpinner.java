@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Kalin Maldzhanski
+ * Copyright (C) 2015 Kalin Maldzhanski
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,32 +20,18 @@ package org.djodjo.widget.multiselectspinner;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.Spinner;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MultiSelectSpinner extends Spinner implements
-        OnMultiChoiceClickListener, DialogInterface.OnCancelListener {
+public class MultiSelectSpinner extends BaseMultiSelectSpinner {
 
-    protected List<String> items;
-
-    protected boolean[] selected;
-    protected String allCheckedText;
-    protected String allUncheckedText;
-    protected MultiSpinnerListener listener;
-    protected ListAdapter listAdapter;
-    protected boolean selectAll;
-    protected int minSelectedItems =0;
-    protected int maxSelectedItems = Integer.MAX_VALUE;
-    protected String title = null;
 
 
     public MultiSelectSpinner(Context context) {
@@ -64,102 +50,43 @@ public class MultiSelectSpinner extends Spinner implements
         super(context, attrs, defStyle, styleRes);
     }
 
-    public boolean[] getSelected() {
-        return selected;
-    }
-    public boolean isSelectAll() {
-        return selectAll;
-    }
+    public MultiSelectSpinner setItems(List<String> items) {
+        this.items = items;
 
-    public MultiSelectSpinner setSelectAll(boolean selectAll) {
-        if(this.selectAll != selectAll) {
-            this.selectAll = selectAll;
-            if (selected != null) {
-                if (selectAll) {
-                    for (int i = 0; i < selected.length; i++) {
-                        selected[i] = true;
-                    }
-                } else {
-                    for (int i = 0; i < selected.length; i++) {
-                        selected[i] = false;
-                    }
-                }
-                ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getContext(),
-                        android.R.layout.simple_spinner_item, new String[]{(isSelectAll()) ? allCheckedText : allUncheckedText});
-                setAdapter(spinnerAdapter);
+        // all selected by default
+        selected = new boolean[items.size()];
+        if(selectAll) {
+            for (int i = 0; i < selected.length; i++) {
+                selected[i] = true;
             }
         }
+
+        // all text on the spinner
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getContext(),
+                android.R.layout.simple_spinner_item, new String[] { (isSelectAll())?allCheckedText:allUncheckedText });
+        setAdapter(spinnerAdapter);
+
         return this;
     }
 
-    public int getMinSelectedItems() {
-        return minSelectedItems;
-    }
+    public BaseMultiSelectSpinner setListAdapter(ListAdapter listAdapter) {
+        this.listAdapter = listAdapter;
+        this.items = new ArrayList<String>();
+        selected = new boolean[listAdapter.getCount()];
+        for(int i=0;i<listAdapter.getCount();i++) {
+            items.add(String.valueOf(listAdapter.getItem(i)));
+            if(selectAll) {
+                selected[i] = true;
+            }
 
-    public MultiSelectSpinner setMinSelectedItems(int minSelectedItems) {
-        this.minSelectedItems = minSelectedItems;
+        }
+
+        // all text on the spinner
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getContext(),
+                android.R.layout.simple_spinner_item, new String[] { (isSelectAll())?allCheckedText:allUncheckedText });
+        setAdapter(spinnerAdapter);
+
         return this;
-    }
-
-    public int getMaxSelectedItems() {
-        return maxSelectedItems;
-    }
-
-    public MultiSelectSpinner setMaxSelectedItems(int maxSelectedItems) {
-        this.maxSelectedItems = maxSelectedItems;
-        return this;
-    }
-
-//    public int getCurrCheckedItems() {
-//        return currCheckedItems;
-//    }
-
-    @Override
-    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-        if (isChecked) {
-            if(((AlertDialog)dialog).getListView().getCheckedItemCount() > maxSelectedItems) {
-                ((AlertDialog)dialog).getListView().setItemChecked(which, false);
-            } else {
-                selected[which] = true;
-            }
-        }
-        else {
-            if(((AlertDialog)dialog).getListView().getCheckedItemCount() < minSelectedItems) {
-                ((AlertDialog)dialog).getListView().setItemChecked(which, true);
-            } else {
-                selected[which] = false;
-            }
-        }
-
-    }
-
-    @Override
-    public void onCancel(DialogInterface dialog) {
-        // refresh text on spinner
-        StringBuffer spinnerBuffer = new StringBuffer();
-        for (int i = 0; i < items.size(); i++) {
-            if (selected[i] == true) {
-                spinnerBuffer.append(items.get(i));
-                spinnerBuffer.append(", ");
-            }
-        }
-        String spinnerText;
-        if(((AlertDialog)dialog).getListView().getCheckedItemCount()==selected.length) {
-            spinnerText = allCheckedText;
-        } else if(((AlertDialog)dialog).getListView().getCheckedItemCount()==0) {
-            spinnerText = allUncheckedText;
-        } else {
-            spinnerText = spinnerBuffer.toString();
-            if (spinnerText.length() > 2)
-                spinnerText = spinnerText.substring(0, spinnerText.length() - 2);
-        }
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_spinner_item,
-                new String[] { spinnerText });
-        setAdapter(adapter);
-        if(listener!=null) {
-            listener.onItemsSelected(selected);
-        }
     }
 
     @Override
@@ -175,6 +102,7 @@ public class MultiSelectSpinner extends Spinner implements
                     }
                 }
         );
+
         if(listAdapter!=null) {
             builder.setAdapter(this.listAdapter, null);
             final AlertDialog dialog = builder.create();
@@ -209,96 +137,37 @@ public class MultiSelectSpinner extends Spinner implements
         } else if(items!=null) {
             builder.setMultiChoiceItems(items.toArray(new CharSequence[items.size()]), selected, this).show();
             return true;
-
         }
         return false;
     }
 
-    public MultiSelectSpinner setTitle(int stringResource) {
-        this.title = getResources().getString(stringResource);
-        return this;
-    }
-
-    public MultiSelectSpinner setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
-    public MultiSelectSpinner setItems(List<String> items, String allCheckedText, String allUncheckedText,
-                                       MultiSpinnerListener listener) {
-        this.items = items;
-        this.allCheckedText = allCheckedText;
-        this.allUncheckedText = allUncheckedText;
-        this.listener = listener;
-
-        // all selected by default
-        selected = new boolean[items.size()];
-        if(selectAll) {
-            for (int i = 0; i < selected.length; i++) {
-                selected[i] = true;
-            }
-        }
-
-        // all text on the spinner
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_spinner_item, new String[] { (isSelectAll())?allCheckedText:allUncheckedText });
-        setAdapter(spinnerAdapter);
-
-        return this;
-    }
-
-    public interface MultiSpinnerListener {
-        public void onItemsSelected(boolean[] selected);
-    }
-
-
-    public MultiSelectSpinner setListAdapter(ListAdapter listAdapter, String allCheckedText, String allUncheckedText, MultiSpinnerListener listener) {
-        this.listener = listener;
-        this.allCheckedText = allCheckedText;
-        this.allUncheckedText = allUncheckedText;
-        this.listAdapter = listAdapter;
-        this.items = new ArrayList<String>();
-        selected = new boolean[listAdapter.getCount()];
-        for(int i=0;i<listAdapter.getCount();i++) {
-            items.add(String.valueOf(listAdapter.getItem(i)));
-            if(selectAll) {
-                selected[i] = true;
-            }
-
-        }
-
-        // all text on the spinner
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_spinner_item, new String[] { (isSelectAll())?allCheckedText:allUncheckedText });
-        setAdapter(spinnerAdapter);
-
-        return this;
-    }
-
-    public MultiSelectSpinner selectItem(int item, boolean set) {
-        if(item>=selected.length) {
-            throw new ArrayIndexOutOfBoundsException("Item number is more than available items");
-        }
-        selected[item] = set;
+    @Override
+    public void onCancel(DialogInterface dialog) {
         // refresh text on spinner
-        StringBuffer spinnerBuffer = new StringBuffer();
-        for (int i = 0; i < items.size(); i++) {
-            if (selected[i] == true) {
-                spinnerBuffer.append(items.get(i));
-                spinnerBuffer.append(", ");
-            }
-        }
+
         String spinnerText;
-
-        spinnerText = spinnerBuffer.toString();
-        if (spinnerText.length() > 2)
-            spinnerText = spinnerText.substring(0, spinnerText.length() - 2);
-
+        if(((AlertDialog)dialog).getListView().getCheckedItemCount()==selected.length) {
+            spinnerText = allCheckedText;
+        } else if(((AlertDialog)dialog).getListView().getCheckedItemCount()==0) {
+            spinnerText = allUncheckedText;
+        } else {
+            StringBuffer spinnerBuffer = new StringBuffer();
+            for (int i = 0; i < items.size(); i++) {
+                if (selected[i] == true) {
+                    spinnerBuffer.append(items.get(i));
+                    spinnerBuffer.append(", ");
+                }
+            }
+            spinnerText = spinnerBuffer.toString();
+            if (spinnerText.length() > 2)
+                spinnerText = spinnerText.substring(0, spinnerText.length() - 2);
+        }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
                 android.R.layout.simple_spinner_item,
                 new String[] { spinnerText });
         setAdapter(adapter);
-        return  this;
+        if(listener!=null) {
+            listener.onItemsSelected(selected);
+        }
     }
-
 }
