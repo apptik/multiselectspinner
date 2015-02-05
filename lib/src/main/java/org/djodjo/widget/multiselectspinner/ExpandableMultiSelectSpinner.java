@@ -146,7 +146,7 @@ public class ExpandableMultiSelectSpinner extends BaseMultiSelectSpinner {
                 myList.setItemChecked(position, selected[id]);
             }
         }
-
+        expandSelected();
         return true;
     }
 
@@ -155,8 +155,8 @@ public class ExpandableMultiSelectSpinner extends BaseMultiSelectSpinner {
         // refresh text on spinner
 
         String spinnerText;
-        //must have at least one expanded group to get getCheckedItemCount right -- baad "expandable" listview
-        myList.expandGroup(0);
+        //must have selected expanded groups to get getCheckedItemCount right -- baad "expandable" listview
+        expandSelected();
         if(myList.getCheckedItemCount()==selected.length) {
             spinnerText = allCheckedText;
         } else if(myList.getCheckedItemCount()==0) {
@@ -197,4 +197,25 @@ public class ExpandableMultiSelectSpinner extends BaseMultiSelectSpinner {
     }
 
 
+    private void expandSelected() {
+        int id = -1;
+        int gid = -1;
+        for(List<String> its:mapItems.values()) {
+            gid++;
+            //group must be expanded to set the value
+            myList.expandGroup(gid);
+
+            boolean hasSelected = false;
+            for(String it:its) {
+                id++;
+                if(selected[id]) {
+                    hasSelected = true;
+                };
+            }
+            if(!hasSelected) {
+                myList.collapseGroup(gid);
+            }
+
+        }
+    }
 }

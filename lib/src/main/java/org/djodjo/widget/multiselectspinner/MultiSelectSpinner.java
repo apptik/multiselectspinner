@@ -33,7 +33,6 @@ import java.util.List;
 public class MultiSelectSpinner extends BaseMultiSelectSpinner {
 
 
-
     public MultiSelectSpinner(Context context) {
         super(context);
     }
@@ -108,6 +107,7 @@ public class MultiSelectSpinner extends BaseMultiSelectSpinner {
             final AlertDialog dialog = builder.create();
             dialog.getListView().setItemsCanFocus(false);
             dialog.getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+
             dialog.show();
             for(int i=0;i<listAdapter.getCount();i++) {
                 dialog.getListView().setItemChecked(i,selected[i]);
