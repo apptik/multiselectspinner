@@ -104,6 +104,13 @@ public abstract class BaseMultiSelectSpinner extends Spinner implements
         return true;
     }
 
+    public boolean isSelectNone() {
+        for(boolean si :selected) {
+            if(si) return false;
+        }
+        return true;
+    }
+
     public <T extends BaseMultiSelectSpinner> T setSelectAll(boolean selectAll) {
         if(this.selectAll != selectAll) {
             this.selectAll = selectAll;

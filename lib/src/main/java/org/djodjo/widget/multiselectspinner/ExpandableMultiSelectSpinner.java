@@ -182,9 +182,9 @@ public class ExpandableMultiSelectSpinner extends BaseMultiSelectSpinner {
         //must have selected expanded groups to get getCheckedItemCount right -- baad "expandable" listview
         expandSelected();
 
-        if(myList.getCheckedItemCount()==selected.length) {
+        if(isSelectAll()) {
             spinnerText = allCheckedText;
-        } else if(myList.getCheckedItemCount()==0) {
+        } else if(isSelectNone()) {
             spinnerText = allUncheckedText;
         } else {
             StringBuffer spinnerBuffer = new StringBuffer();
@@ -195,8 +195,9 @@ public class ExpandableMultiSelectSpinner extends BaseMultiSelectSpinner {
                 }
             }
             spinnerText = spinnerBuffer.toString();
-            if (spinnerText.length() > 2)
+            if (spinnerText.length() > 2) {
                 spinnerText = spinnerText.substring(0, spinnerText.length() - 2);
+            }
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
