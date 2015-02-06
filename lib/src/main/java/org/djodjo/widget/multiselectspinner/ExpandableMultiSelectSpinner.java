@@ -181,6 +181,7 @@ public class ExpandableMultiSelectSpinner extends BaseMultiSelectSpinner {
         String spinnerText;
         //must have selected expanded groups to get getCheckedItemCount right -- baad "expandable" listview
         expandSelected();
+
         if(myList.getCheckedItemCount()==selected.length) {
             spinnerText = allCheckedText;
         } else if(myList.getCheckedItemCount()==0) {
@@ -197,10 +198,12 @@ public class ExpandableMultiSelectSpinner extends BaseMultiSelectSpinner {
             if (spinnerText.length() > 2)
                 spinnerText = spinnerText.substring(0, spinnerText.length() - 2);
         }
+
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
                 android.R.layout.simple_spinner_item,
                 new String[] { spinnerText });
         setAdapter(adapter);
+
         if(listener!=null) {
             listener.onItemsSelected(selected);
         }
