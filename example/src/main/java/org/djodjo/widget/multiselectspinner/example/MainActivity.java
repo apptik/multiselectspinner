@@ -121,6 +121,7 @@ public class MainActivity extends ActionBarActivity {
 
                     }
                 })
+                .setSpinnerItemLayout(R.layout.custom_spinner_item)
                 .setAllCheckedText("All types")
                 .setAllUncheckedText("none selected")
                 .setSelectAll(true)

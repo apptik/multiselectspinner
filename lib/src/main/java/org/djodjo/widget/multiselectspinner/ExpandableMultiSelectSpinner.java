@@ -174,51 +174,17 @@ public class ExpandableMultiSelectSpinner extends BaseMultiSelectSpinner {
         return true;
     }
 
-    @Override
-    public void onCancel(DialogInterface dialog) {
-        // refresh text on spinner
 
-        String spinnerText;
-        //must have selected expanded groups to get getCheckedItemCount right -- baad "expandable" listview
-        expandSelected();
-
-        if(isSelectAll()) {
-            spinnerText = allCheckedText;
-        } else if(isSelectNone()) {
-            spinnerText = allUncheckedText;
-        } else {
-            StringBuffer spinnerBuffer = new StringBuffer();
-            for (int i = 0; i < items.size(); i++) {
-                if (selected[i] == true) {
-                    spinnerBuffer.append(items.get(i));
-                    spinnerBuffer.append(", ");
-                }
-            }
-            spinnerText = spinnerBuffer.toString();
-            if (spinnerText.length() > 2) {
-                spinnerText = spinnerText.substring(0, spinnerText.length() - 2);
-            }
-        }
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_spinner_item,
-                new String[] { spinnerText });
-        setAdapter(adapter);
-
-        if(listener!=null) {
-            listener.onItemsSelected(selected);
-        }
-    }
 
     private int getFlatArrPos(int group, int child) {
-       int id = -1;
+        int id = -1;
         int gid = -1;
 
-            for(List<String> its:mapItems.values()) {
-                if(gid==group-1) break;
-                id+=its.size();
-                gid++;
-            }
+        for(List<String> its:mapItems.values()) {
+            if(gid==group-1) break;
+            id+=its.size();
+            gid++;
+        }
 
         id +=child + 1;
         return id;
@@ -246,4 +212,5 @@ public class ExpandableMultiSelectSpinner extends BaseMultiSelectSpinner {
 
         }
     }
+
 }

@@ -62,7 +62,7 @@ public class MultiSelectSpinner extends BaseMultiSelectSpinner {
 
         // all text on the spinner
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_spinner_item, new String[] { (isSelectAll())?allCheckedText:allUncheckedText });
+                spinnerItemLayout, new String[] { (isSelectAll())?allCheckedText:allUncheckedText });
         setAdapter(spinnerAdapter);
 
         return this;
@@ -82,7 +82,7 @@ public class MultiSelectSpinner extends BaseMultiSelectSpinner {
 
         // all text on the spinner
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_spinner_item, new String[] { (isSelectAll())?allCheckedText:allUncheckedText });
+                spinnerItemLayout, new String[] { (isSelectAll())?allCheckedText:allUncheckedText });
         setAdapter(spinnerAdapter);
 
         return this;
@@ -141,33 +141,7 @@ public class MultiSelectSpinner extends BaseMultiSelectSpinner {
         return false;
     }
 
-    @Override
-    public void onCancel(DialogInterface dialog) {
-        // refresh text on spinner
 
-        String spinnerText;
-        if(((AlertDialog)dialog).getListView().getCheckedItemCount()==selected.length) {
-            spinnerText = allCheckedText;
-        } else if(((AlertDialog)dialog).getListView().getCheckedItemCount()==0) {
-            spinnerText = allUncheckedText;
-        } else {
-            StringBuffer spinnerBuffer = new StringBuffer();
-            for (int i = 0; i < items.size(); i++) {
-                if (selected[i] == true) {
-                    spinnerBuffer.append(items.get(i));
-                    spinnerBuffer.append(", ");
-                }
-            }
-            spinnerText = spinnerBuffer.toString();
-            if (spinnerText.length() > 2)
-                spinnerText = spinnerText.substring(0, spinnerText.length() - 2);
-        }
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_spinner_item,
-                new String[] { spinnerText });
-        setAdapter(adapter);
-        if(listener!=null) {
-            listener.onItemsSelected(selected);
-        }
-    }
+
+
 }

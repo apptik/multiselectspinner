@@ -21,6 +21,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
@@ -31,42 +33,6 @@ import java.util.List;
 public abstract class BaseMultiSelectSpinner extends Spinner implements
         OnMultiChoiceClickListener, DialogInterface.OnCancelListener {
 
-    protected boolean[] selected;
-    protected List<String> items;
-
-    public String getAllCheckedText() {
-        return allCheckedText;
-    }
-
-    public <T extends BaseMultiSelectSpinner> T setAllCheckedText(String allCheckedText) {
-        this.allCheckedText = allCheckedText;
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_spinner_item, new String[]{(isSelectAll()) ? allCheckedText : allUncheckedText});
-        setAdapter(spinnerAdapter);
-        return (T)this;
-    }
-
-    public String getAllUncheckedText() {
-        return allUncheckedText;
-    }
-
-    public <T extends BaseMultiSelectSpinner> T  setAllUncheckedText(String allUncheckedText) {
-        this.allUncheckedText = allUncheckedText;
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_spinner_item, new String[]{(isSelectAll()) ? allCheckedText : allUncheckedText});
-        setAdapter(spinnerAdapter);
-        return (T)this;
-    }
-
-    public MultiSpinnerListener getListener() {
-        return listener;
-    }
-
-    public <T extends BaseMultiSelectSpinner> T  setListener(MultiSpinnerListener listener) {
-        this.listener = listener;
-        return (T)this;
-    }
-
     protected String allCheckedText = "";
     protected String allUncheckedText = "";
     protected MultiSpinnerListener listener;
@@ -75,6 +41,9 @@ public abstract class BaseMultiSelectSpinner extends Spinner implements
     protected int minSelectedItems =0;
     protected int maxSelectedItems = Integer.MAX_VALUE;
     protected String title = null;
+    protected boolean[] selected;
+    protected List<String> items;
+    protected int spinnerItemLayout = android.R.layout.simple_spinner_item;
 
 
     public BaseMultiSelectSpinner(Context context) {
@@ -92,6 +61,51 @@ public abstract class BaseMultiSelectSpinner extends Spinner implements
     public BaseMultiSelectSpinner(Context context, AttributeSet attrs, int defStyle, int styleRes) {
         super(context, attrs, defStyle, styleRes);
     }
+
+    public int getSpinnerItemLayout() {
+        return spinnerItemLayout;
+    }
+
+    public <T extends BaseMultiSelectSpinner> T setSpinnerItemLayout(int spinnerItemLayout) {
+        this.spinnerItemLayout = spinnerItemLayout;
+        return (T)this;
+    }
+
+
+    public String getAllCheckedText() {
+        return allCheckedText;
+    }
+
+    public <T extends BaseMultiSelectSpinner> T setAllCheckedText(String allCheckedText) {
+        this.allCheckedText = allCheckedText;
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getContext(),
+                spinnerItemLayout , new String[]{(isSelectAll()) ? allCheckedText : allUncheckedText});
+        setAdapter(spinnerAdapter);
+        return (T)this;
+    }
+
+    public String getAllUncheckedText() {
+        return allUncheckedText;
+    }
+
+    public <T extends BaseMultiSelectSpinner> T  setAllUncheckedText(String allUncheckedText) {
+        this.allUncheckedText = allUncheckedText;
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getContext(),
+                spinnerItemLayout, new String[]{(isSelectAll()) ? allCheckedText : allUncheckedText});
+        setAdapter(spinnerAdapter);
+        return (T)this;
+    }
+
+    public MultiSpinnerListener getListener() {
+        return listener;
+    }
+
+    public <T extends BaseMultiSelectSpinner> T  setListener(MultiSpinnerListener listener) {
+        this.listener = listener;
+        return (T)this;
+    }
+
+
 
     public boolean[] getSelected() {
         return selected;
@@ -125,7 +139,7 @@ public abstract class BaseMultiSelectSpinner extends Spinner implements
                     }
                 }
                 ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getContext(),
-                        android.R.layout.simple_spinner_item, new String[]{(isSelectAll()) ? allCheckedText : allUncheckedText});
+                        spinnerItemLayout, new String[]{(isSelectAll()) ? allCheckedText : allUncheckedText});
                 setAdapter(spinnerAdapter);
             }
         }
@@ -174,7 +188,12 @@ public abstract class BaseMultiSelectSpinner extends Spinner implements
     }
 
     @Override
-    public abstract void onCancel(DialogInterface dialog);
+    public void onCancel(DialogInterface dialog) {
+        refreshSpinnerText(getSpinnerText());
+        if(listener!=null) {
+            listener.onItemsSelected(selected);
+        }
+    }
 
     public abstract boolean performClick();
 
@@ -199,25 +218,84 @@ public abstract class BaseMultiSelectSpinner extends Spinner implements
             throw new ArrayIndexOutOfBoundsException("Item number is more than available items");
         }
         selected[item] = set;
-        // refresh text on spinner
-        StringBuffer spinnerBuffer = new StringBuffer();
-        for (int i = 0; i < items.size(); i++) {
-            if (selected[i] == true) {
-                spinnerBuffer.append(items.get(i));
-                spinnerBuffer.append(", ");
-            }
-        }
-        String spinnerText;
 
-        spinnerText = spinnerBuffer.toString();
-        if (spinnerText.length() > 2)
-            spinnerText = spinnerText.substring(0, spinnerText.length() - 2);
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_spinner_item,
-                new String[] { spinnerText });
-        setAdapter(adapter);
+        refreshSpinnerText(getSpinnerText());
         return  (T)this;
+    }
+
+    public String getSpinnerText() {
+        String spinnerText;
+        if(isSelectAll()) {
+            spinnerText = allCheckedText;
+        } else if(isSelectNone()) {
+            spinnerText = allUncheckedText;
+        } else {
+            StringBuffer spinnerBuffer = new StringBuffer();
+            for (int i = 0; i < items.size(); i++) {
+                if (selected[i] == true) {
+                    spinnerBuffer.append(items.get(i));
+                    spinnerBuffer.append(", ");
+                }
+            }
+            spinnerText = spinnerBuffer.toString();
+            if (spinnerText.length() > 2)
+                spinnerText = spinnerText.substring(0, spinnerText.length() - 2);
+        }
+
+        return spinnerText;
+    }
+
+    public void refreshSpinnerText(String text) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
+                spinnerItemLayout,
+                new String[] { text });
+        setAdapter(adapter);
+    }
+
+
+    @Override
+    public Parcelable onSaveInstanceState() {
+        final SavedState ss = new SavedState(super.onSaveInstanceState());
+        ss.selected = selected;
+        return ss;
+    }
+
+    @Override
+    public void onRestoreInstanceState(Parcelable state) {
+        SavedState ss = (SavedState) state;
+        super.onRestoreInstanceState(ss.getSuperState());
+        selected = ss.selected;
+        refreshSpinnerText(getSpinnerText());
+    }
+
+    static class SavedState extends BaseSavedState{
+        boolean[] selected;
+
+        SavedState(Parcelable superState) {
+            super(superState);
+        }
+
+        private SavedState(Parcel in) {
+            super(in);
+            in.readBooleanArray(selected);
+        }
+
+        @Override
+        public void writeToParcel(Parcel out, int flags) {
+            super.writeToParcel(out, flags);
+            out.writeBooleanArray(selected);
+        }
+
+        public static final Parcelable.Creator<SavedState> CREATOR =
+                new Parcelable.Creator<SavedState>() {
+                    public SavedState createFromParcel(Parcel in) {
+                        return new SavedState(in);
+                    }
+
+                    public SavedState[] newArray(int size) {
+                        return new SavedState[size];
+                    }
+                };
     }
 
 }
