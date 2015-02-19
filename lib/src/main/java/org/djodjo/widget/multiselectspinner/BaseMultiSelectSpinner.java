@@ -21,6 +21,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
+import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
@@ -46,20 +48,138 @@ public abstract class BaseMultiSelectSpinner extends Spinner implements
     protected int spinnerItemLayout = android.R.layout.simple_spinner_item;
 
 
+    protected int choiceDialogTheme;
+    protected Drawable titleDividerDrawable;
+    protected int titleDividerColor;
+
+    /**
+     * Construct a new spinner with the given context's theme.
+     *
+     * @param context The Context the view is running in, through which it can
+     *        access the current theme, resources, etc.
+     */
     public BaseMultiSelectSpinner(Context context) {
-        super(context);
+        this(context, null);
     }
 
+    /**
+     * Construct a new spinner with the given context's theme and the supplied
+     * mode of displaying choices. <code>mode</code> may be one of
+     * {@link #MODE_DIALOG} or {@link #MODE_DROPDOWN}.
+     *
+     * @param context The Context the view is running in, through which it can
+     *        access the current theme, resources, etc.
+     * @param mode Constant describing how the user will select choices from the spinner.
+     *
+     * @see #MODE_DIALOG
+     * @see #MODE_DROPDOWN
+     */
+    public BaseMultiSelectSpinner(Context context, int mode) {
+        this(context, null, R.attr.multiSelectSpinnerStyle, mode);
+    }
+
+    /**
+     * Construct a new spinner with the given context's theme and the supplied attribute set.
+     *
+     * @param context The Context the view is running in, through which it can
+     *        access the current theme, resources, etc.
+     * @param attrs The attributes of the XML tag that is inflating the view.
+     */
     public BaseMultiSelectSpinner(Context context, AttributeSet attrs) {
+        this(context, attrs, R.attr.multiSelectSpinnerStyle);
+    }
+
+    /**
+     * Construct a new spinner with the given context's theme, the supplied attribute set,
+     * and default style attribute.
+     *
+     * @param context The Context the view is running in, through which it can
+     *        access the current theme, resources, etc.
+     * @param attrs The attributes of the XML tag that is inflating the view.
+     * @param defStyleAttr An attribute in the current theme that contains a
+     *        reference to a style resource that supplies default values for
+     *        the view. Can be 0 to not look for defaults.
+     */
+    public BaseMultiSelectSpinner(Context context, AttributeSet attrs, int defStyleAttr) {
+        this(context, attrs, defStyleAttr, 0, -1);
+    }
+
+    /**
+     * Construct a new spinner with the given context's theme, the supplied attribute set,
+     * and default style. <code>mode</code> may be one of {@link #MODE_DIALOG} or
+     * {@link #MODE_DROPDOWN} and determines how the user will select choices from the spinner.
+     *
+     * @param context The Context the view is running in, through which it can
+     *        access the current theme, resources, etc.
+     * @param attrs The attributes of the XML tag that is inflating the view.
+     * @param defStyleAttr An attribute in the current theme that contains a
+     *        reference to a style resource that supplies default values for
+     *        the view. Can be 0 to not look for defaults.
+     * @param mode Constant describing how the user will select choices from the spinner.
+     *
+     * @see #MODE_DIALOG
+     * @see #MODE_DROPDOWN
+     */
+    public BaseMultiSelectSpinner(Context context, AttributeSet attrs, int defStyleAttr, int mode) {
+        this(context, attrs, defStyleAttr, 0, mode);
+    }
+
+    /**
+     * Construct a new spinner with the given context's theme, the supplied attribute set,
+     * and default style. <code>mode</code> may be one of {@link #MODE_DIALOG} or
+     * {@link #MODE_DROPDOWN} and determines how the user will select choices from the spinner.
+     *
+     * @param context The Context the view is running in, through which it can
+     *        access the current theme, resources, etc.
+     * @param attrs The attributes of the XML tag that is inflating the view.
+     * @param defStyleAttr An attribute in the current theme that contains a
+     *        reference to a style resource that supplies default values for
+     *        the view. Can be 0 to not look for defaults.
+     * @param defStyleRes A resource identifier of a style resource that
+     *        supplies default values for the view, used only if
+     *        defStyleAttr is 0 or can not be found in the theme. Can be 0
+     *        to not look for defaults.
+     * @param mode Constant describing how the user will select choices from the spinner.
+     *
+     * @see #MODE_DIALOG
+     * @see #MODE_DROPDOWN
+     */
+    public BaseMultiSelectSpinner(
+            Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes, int mode) {
         super(context, attrs);
+
+        final TypedArray a = context.obtainStyledAttributes(
+                attrs, R.styleable.MultiSelectSpinner, defStyleAttr, defStyleRes);
+
+        choiceDialogTheme = a.getResourceId(R.styleable.MultiSelectSpinner_choiceDialogTheme, 0);
+
+        titleDividerDrawable = a.getDrawable(R.styleable.MultiSelectSpinner_titleDividerDrawable);
+
+        titleDividerColor = a.getColor(R.styleable.MultiSelectSpinner_titleDividerColor, 0);
     }
 
-    public BaseMultiSelectSpinner(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
+    public int getTitleDividerColor() {
+        return titleDividerColor;
     }
 
-    public BaseMultiSelectSpinner(Context context, AttributeSet attrs, int defStyle, int styleRes) {
-        super(context, attrs, defStyle, styleRes);
+    public void setTitleDividerColor(int titleDividerColor) {
+        this.titleDividerColor = titleDividerColor;
+    }
+
+    public int getChoiceDialogTheme() {
+        return choiceDialogTheme;
+    }
+
+    public void setChoiceDialogTheme(int choiceDialogTheme) {
+        this.choiceDialogTheme = choiceDialogTheme;
+    }
+
+    public Drawable getTitleDividerDrawable() {
+        return titleDividerDrawable;
+    }
+
+    public void setTitleDividerDrawable(Drawable titleDividerDrawable) {
+        this.titleDividerDrawable = titleDividerDrawable;
     }
 
     public int getSpinnerItemLayout() {

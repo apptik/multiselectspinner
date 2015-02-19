@@ -17,9 +17,11 @@
 package org.djodjo.widget.multiselectspinner;
 
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.AdapterView;
@@ -88,10 +90,20 @@ public class MultiSelectSpinner extends BaseMultiSelectSpinner {
         return this;
     }
 
+  //  @SuppressLint("NewApi")
+    @SuppressLint("NewApi")
     @Override
     public boolean performClick() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder builder;
+        final AlertDialog dialog;
+        if(choiceDialogTheme >0) {
+            builder = new AlertDialog.Builder(getContext(), choiceDialogTheme);
+        } else {
+            builder = new AlertDialog.Builder(getContext());
+        }
+
         builder.setTitle(title);
+
         builder.setOnCancelListener(this);
         builder.setPositiveButton(android.R.string.ok,
                 new DialogInterface.OnClickListener() {
@@ -104,7 +116,7 @@ public class MultiSelectSpinner extends BaseMultiSelectSpinner {
 
         if(listAdapter!=null) {
             builder.setAdapter(this.listAdapter, null);
-            final AlertDialog dialog = builder.create();
+            dialog = builder.create();
             dialog.getListView().setItemsCanFocus(false);
             dialog.getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
@@ -133,12 +145,31 @@ public class MultiSelectSpinner extends BaseMultiSelectSpinner {
 
                 }
             });
-            return true;
         } else if(items!=null) {
-            builder.setMultiChoiceItems(items.toArray(new CharSequence[items.size()]), selected, this).show();
+            dialog = builder.setMultiChoiceItems(items.toArray(new CharSequence[items.size()]), selected, this).show();
+        } else {
+            dialog = null;
+        }
+        if(titleDividerDrawable !=null && dialog!=null) {
+            int dividerId = dialog.getContext().getResources().getIdentifier("android:id/titleDivider", null, null);
+            View divider = dialog.findViewById(dividerId);
+            if((Build.VERSION.SDK_INT > 15)) {
+                divider.setBackground(titleDividerDrawable);
+            } else {
+                divider.setBackgroundDrawable(titleDividerDrawable);
+            }
+        }
+
+        if(titleDividerColor != 0 && dialog!=null) {
+            int dividerId = dialog.getContext().getResources().getIdentifier("android:id/titleDivider", null, null);
+            View divider = dialog.findViewById(dividerId);
+            divider.setBackgroundColor(titleDividerColor);
+        }
+        if(dialog==null) {
+            return false;
+        } else {
             return true;
         }
-        return false;
     }
 
 

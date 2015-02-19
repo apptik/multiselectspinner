@@ -23,6 +23,13 @@
     <string name="adapter_example4">adapter example 3</string>
     <string name="custom_adapter_example">custom adapter example</string>
     <string name="hashmap_adapter_example">grouped/expandable options example</string>
+
+    <string name="adapter_example7">adapter example custom title 1</string>
+
+    <string name="adapter_example8">adapter example custom title 2</string>
+
+    <string name="adapter_example9">adapter example custom title 3</string>
+
     <string name="title">Select Type</string>
 
     <string name="action_settings">Settings</string>

@@ -17,9 +17,11 @@
 package org.djodjo.widget.multiselectspinner;
 
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -97,12 +99,18 @@ public class ExpandableMultiSelectSpinner extends BaseMultiSelectSpinner {
         return this;
     }
 
+    @SuppressLint("NewApi")
     @Override
     public boolean performClick() {
-
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder builder;
+        final AlertDialog dialog;
+        if(choiceDialogTheme >0) {
+            builder = new AlertDialog.Builder(getContext(), choiceDialogTheme);
+        } else {
+            builder = new AlertDialog.Builder(getContext());
+        }
         builder.setTitle(title);
+
         builder.setOnCancelListener(this);
         builder.setPositiveButton(android.R.string.ok,
                 new DialogInterface.OnClickListener() {
@@ -152,8 +160,23 @@ public class ExpandableMultiSelectSpinner extends BaseMultiSelectSpinner {
 
 
         builder.setView(myList);
-        AlertDialog dialog = builder.create();
+        dialog = builder.create();
         dialog.show();
+        if(titleDividerDrawable !=null && dialog!=null) {
+            int dividerId = dialog.getContext().getResources().getIdentifier("android:id/titleDivider", null, null);
+            View divider = dialog.findViewById(dividerId);
+            if((Build.VERSION.SDK_INT > 15)) {
+                divider.setBackground(titleDividerDrawable);
+            } else {
+                divider.setBackgroundDrawable(titleDividerDrawable);
+            }
+        }
+
+        if(titleDividerColor != 0 && dialog!=null) {
+            int dividerId = dialog.getContext().getResources().getIdentifier("android:id/titleDivider", null, null);
+            View divider = dialog.findViewById(dividerId);
+            divider.setBackgroundColor(titleDividerColor);
+        }
 
         int id = -1;
         int gid = -1;

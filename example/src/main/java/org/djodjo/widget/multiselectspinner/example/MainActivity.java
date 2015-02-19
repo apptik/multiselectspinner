@@ -156,6 +156,58 @@ public class MainActivity extends ActionBarActivity {
 
         ;
 
+        MultiSelectSpinner multiSelectSpinner7 = (MultiSelectSpinner) findViewById(R.id.multiselectSpinner7);
+        ArrayAdapter<String> adapter7 = new ArrayAdapter <String>(this, android.R.layout.simple_list_item_checked, options);
+        MultiSelectSpinner multiSelectSpinner8 = (MultiSelectSpinner) findViewById(R.id.multiselectSpinner8);
+        ArrayAdapter<String> adapter8 = new ArrayAdapter <String>(this, android.R.layout.simple_list_item_checked, options);
+        MultiSelectSpinner multiSelectSpinner9 = (MultiSelectSpinner) findViewById(R.id.multiselectSpinner9);
+        ArrayAdapter<String> adapter9 = new ArrayAdapter <String>(this, android.R.layout.simple_list_item_checked, options);
+
+        multiSelectSpinner7
+                .setListAdapter(adapter7)
+
+                .setListener(new MultiSelectSpinner.MultiSpinnerListener() {
+                    @Override
+                    public void onItemsSelected(boolean[] selected) {
+
+                    }
+                })
+                .setAllCheckedText("All types")
+                .setAllUncheckedText("none selected")
+                .setSelectAll(true)
+                .setTitle(R.string.title)
+                .setMinSelectedItems(1);
+
+        multiSelectSpinner8
+                .setListAdapter(adapter8)
+
+                .setListener(new MultiSelectSpinner.MultiSpinnerListener() {
+                    @Override
+                    public void onItemsSelected(boolean[] selected) {
+
+                    }
+                })
+                .setAllCheckedText("All types")
+                .setAllUncheckedText("none selected")
+                .setSelectAll(true)
+                .setTitle(R.string.title)
+                .setMinSelectedItems(1);
+
+        multiSelectSpinner9
+                .setListAdapter(adapter9)
+
+                .setListener(new MultiSelectSpinner.MultiSpinnerListener() {
+                    @Override
+                    public void onItemsSelected(boolean[] selected) {
+
+                    }
+                })
+                .setAllCheckedText("All types")
+                .setAllUncheckedText("none selected")
+                .setSelectAll(true)
+                .setTitle(R.string.title)
+                .setMinSelectedItems(1);
+
     }
 
 

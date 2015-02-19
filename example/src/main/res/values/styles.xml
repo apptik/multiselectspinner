@@ -21,4 +21,28 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="AlertDialogCustom" parent="@android:style/Theme.Dialog">
+        <item name="android:textColor">#00FF00</item>
+        <item name="android:typeface">monospace</item>
+        <item name="android:textSize">10sp</item>
+    </style>
+
+
+<style name="CustomDialogWindowTitle" parent="@android:style/TextAppearance.Holo.DialogWindowTitle">
+<item name="android:textColor">@android:color/holo_green_light</item>
+<item name="android:textStyle">bold</item>
+</style>
+
+    <style name="CustomAlertDialogTheme" parent="@android:style/Theme.Holo.Dialog">
+    <item name="android:windowBackground">@android:color/transparent</item>
+    <item name="android:windowContentOverlay">@null</item>
+    <item name="android:windowIsFloating">true</item>
+    <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+    <item name="android:windowMinWidthMajor">@android:dimen/dialog_min_width_major</item>
+    <item name="android:windowMinWidthMinor">@android:dimen/dialog_min_width_minor</item>
+    <item name="android:windowTitleStyle">@style/CustomDialogWindowTitle</item>
+    <item name="android:textAppearanceMedium">@android:style/TextAppearance.Holo.DialogWindowTitle</item>
+
+</style>
+
 </resources>
