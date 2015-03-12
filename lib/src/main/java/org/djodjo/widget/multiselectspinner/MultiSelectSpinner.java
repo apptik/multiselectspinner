@@ -90,6 +90,10 @@ public class MultiSelectSpinner extends BaseMultiSelectSpinner {
         return this;
     }
 
+    public ListAdapter getListAdapter() {
+        return this.listAdapter;
+    }
+
   //  @SuppressLint("NewApi")
     @SuppressLint("NewApi")
     @Override
