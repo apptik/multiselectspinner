@@ -27,7 +27,7 @@
     <TextView android:text="@string/basic_example" android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <org.djodjo.widget.multiselectspinner.MultiSelectSpinner
+    <io.apptik.widget.multiselectspinner.MultiSelectSpinner
         android:id="@+id/multiselectSpinner1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
     <TextView android:text="@string/adapter_example2" android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <org.djodjo.widget.multiselectspinner.MultiSelectSpinner
+    <io.apptik.widget.multiselectspinner.MultiSelectSpinner
         android:id="@+id/multiselectSpinner2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
     <TextView android:text="@string/adapter_example3" android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <org.djodjo.widget.multiselectspinner.MultiSelectSpinner
+    <io.apptik.widget.multiselectspinner.MultiSelectSpinner
         android:id="@+id/multiselectSpinner3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -51,7 +51,7 @@
     <TextView android:text="@string/adapter_example4" android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <org.djodjo.widget.multiselectspinner.MultiSelectSpinner
+    <io.apptik.widget.multiselectspinner.MultiSelectSpinner
         android:id="@+id/multiselectSpinner4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -59,7 +59,7 @@
     <TextView android:text="@string/custom_adapter_example" android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <org.djodjo.widget.multiselectspinner.MultiSelectSpinner
+    <io.apptik.widget.multiselectspinner.MultiSelectSpinner
         android:id="@+id/multiselectSpinner5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -68,7 +68,7 @@
     <TextView android:text="@string/hashmap_adapter_example" android:layout_width="wrap_content"
         android:layout_height="wrap_content" />@drawable/
 
-    <org.djodjo.widget.multiselectspinner.ExpandableMultiSelectSpinner
+    <io.apptik.widget.multiselectspinner.ExpandableMultiSelectSpinner
         android:id="@+id/multiselectSpinner6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -77,7 +77,7 @@
     <TextView android:text="@string/adapter_example7" android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <org.djodjo.widget.multiselectspinner.MultiSelectSpinner
+    <io.apptik.widget.multiselectspinner.MultiSelectSpinner
         android:id="@+id/multiselectSpinner7"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -87,7 +87,7 @@
     <TextView android:text="@string/adapter_example8" android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <org.djodjo.widget.multiselectspinner.MultiSelectSpinner
+    <io.apptik.widget.multiselectspinner.MultiSelectSpinner
         android:id="@+id/multiselectSpinner8"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -97,7 +97,7 @@
     <TextView android:text="@string/adapter_example9" android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <org.djodjo.widget.multiselectspinner.MultiSelectSpinner
+    <io.apptik.widget.multiselectspinner.MultiSelectSpinner
         android:id="@+id/multiselectSpinner9"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

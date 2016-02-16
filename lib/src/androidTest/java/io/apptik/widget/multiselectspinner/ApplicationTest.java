@@ -1,4 +1,4 @@
-package org.djodjo.widget.multiselectspinner;
+package io.apptik.widget.multiselectspinner;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

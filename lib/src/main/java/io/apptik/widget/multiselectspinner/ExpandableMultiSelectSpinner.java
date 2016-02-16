@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.djodjo.widget.multiselectspinner;
+package io.apptik.widget.multiselectspinner;
 
 
 import android.annotation.SuppressLint;

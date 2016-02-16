@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.djodjo.widget.multiselectspinner.example;
+package io.apptik.widget.multiselectspinner.example;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -22,8 +22,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 
-import org.djodjo.widget.multiselectspinner.ExpandableMultiSelectSpinner;
-import org.djodjo.widget.multiselectspinner.MultiSelectSpinner;
+import io.apptik.widget.multiselectspinner.ExpandableMultiSelectSpinner;
+import io.apptik.widget.multiselectspinner.MultiSelectSpinner;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

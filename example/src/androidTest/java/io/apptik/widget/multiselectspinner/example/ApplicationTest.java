@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.djodjo.widget.multiselectspinner.example;
+package io.apptik.widget.multiselectspinner.example;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
