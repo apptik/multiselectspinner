@@ -22,12 +22,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 
-import io.apptik.widget.multiselectspinner.ExpandableMultiSelectSpinner;
-import io.apptik.widget.multiselectspinner.MultiSelectSpinner;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+
+import io.apptik.widget.multiselectspinner.ExpandableMultiSelectSpinner;
+import io.apptik.widget.multiselectspinner.MultiSelectSpinner;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -162,6 +162,10 @@ public class MainActivity extends ActionBarActivity {
         ArrayAdapter<String> adapter8 = new ArrayAdapter <String>(this, android.R.layout.simple_list_item_checked, options);
         MultiSelectSpinner multiSelectSpinner9 = (MultiSelectSpinner) findViewById(R.id.multiselectSpinner9);
         ArrayAdapter<String> adapter9 = new ArrayAdapter <String>(this, android.R.layout.simple_list_item_checked, options);
+        MultiSelectSpinner multiSelectSpinner10 = (MultiSelectSpinner) findViewById(R.id
+                .multiselectSpinner10);
+        ArrayAdapter<String> adapter10 = new ArrayAdapter <String>(this, android.R.layout
+                .simple_list_item_checked, options);
 
         multiSelectSpinner7
                 .setListAdapter(adapter7)
@@ -195,6 +199,21 @@ public class MainActivity extends ActionBarActivity {
 
         multiSelectSpinner9
                 .setListAdapter(adapter9)
+
+                .setListener(new MultiSelectSpinner.MultiSpinnerListener() {
+                    @Override
+                    public void onItemsSelected(boolean[] selected) {
+
+                    }
+                })
+                .setAllCheckedText("All types")
+                .setAllUncheckedText("none selected")
+                .setSelectAll(true)
+                .setTitle(R.string.title)
+                .setMinSelectedItems(1);
+
+        multiSelectSpinner10
+                .setListAdapter(adapter10)
 
                 .setListener(new MultiSelectSpinner.MultiSpinnerListener() {
                     @Override

@@ -95,14 +95,24 @@
         />
 
     <TextView android:text="@string/adapter_example9" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+              android:layout_height="wrap_content" />
 
     <io.apptik.widget.multiselectspinner.MultiSelectSpinner
         android:id="@+id/multiselectSpinner9"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:choiceDialogTheme="@style/CustomAlertDialogTheme"
-        />
+    />
+
+    <TextView android:text="@string/adapter_example10" android:layout_width="wrap_content"
+              android:layout_height="wrap_content" />
+
+    <io.apptik.widget.multiselectspinner.MultiSelectSpinner
+        android:id="@+id/multiselectSpinner10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:choiceDialogTheme="@style/AnotherCustomAlertDialogTheme"
+    />
 
 
 </LinearLayout>
