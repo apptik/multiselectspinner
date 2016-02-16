@@ -397,7 +397,7 @@ public abstract class BaseMultiSelectSpinner extends Spinner implements
 
         private SavedState(Parcel in) {
             super(in);
-            in.readBooleanArray(selected);
+            selected = in.createBooleanArray();
         }
 
         @Override
@@ -409,7 +409,8 @@ public abstract class BaseMultiSelectSpinner extends Spinner implements
         public static final Parcelable.Creator<SavedState> CREATOR =
                 new Parcelable.Creator<SavedState>() {
                     public SavedState createFromParcel(Parcel in) {
-                        return new SavedState(in);
+                        SavedState ss = new SavedState(in);
+                        return ss;
                     }
 
                     public SavedState[] newArray(int size) {
