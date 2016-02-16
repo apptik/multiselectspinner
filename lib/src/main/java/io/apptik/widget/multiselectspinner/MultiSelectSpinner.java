@@ -157,17 +157,21 @@ public class MultiSelectSpinner extends BaseMultiSelectSpinner {
         if(titleDividerDrawable !=null && dialog!=null) {
             int dividerId = dialog.getContext().getResources().getIdentifier("android:id/titleDivider", null, null);
             View divider = dialog.findViewById(dividerId);
-            if((Build.VERSION.SDK_INT > 15)) {
-                divider.setBackground(titleDividerDrawable);
-            } else {
-                divider.setBackgroundDrawable(titleDividerDrawable);
+            if(divider!=null) {
+                if ((Build.VERSION.SDK_INT > 15)) {
+                    divider.setBackground(titleDividerDrawable);
+                } else {
+                    divider.setBackgroundDrawable(titleDividerDrawable);
+                }
             }
         }
 
         if(titleDividerColor != 0 && dialog!=null) {
             int dividerId = dialog.getContext().getResources().getIdentifier("android:id/titleDivider", null, null);
             View divider = dialog.findViewById(dividerId);
-            divider.setBackgroundColor(titleDividerColor);
+            if(divider!=null) {
+                divider.setBackgroundColor(titleDividerColor);
+            }
         }
         if(dialog==null) {
             return false;
