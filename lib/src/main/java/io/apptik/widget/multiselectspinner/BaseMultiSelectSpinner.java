@@ -17,7 +17,6 @@
 package io.apptik.widget.multiselectspinner;
 
 
-import android.support.v7.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
@@ -25,6 +24,7 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
@@ -377,6 +377,7 @@ public abstract class BaseMultiSelectSpinner extends Spinner implements
     public Parcelable onSaveInstanceState() {
         final SavedState ss = new SavedState(super.onSaveInstanceState());
         ss.selected = selected;
+        ss.items = items;
         return ss;
     }
 
@@ -385,11 +386,13 @@ public abstract class BaseMultiSelectSpinner extends Spinner implements
         SavedState ss = (SavedState) state;
         super.onRestoreInstanceState(ss.getSuperState());
         selected = ss.selected;
+        items = ss.items;
         refreshSpinnerText(getSpinnerText());
     }
 
     static class SavedState extends BaseSavedState{
         boolean[] selected;
+        List<String> items;
 
         SavedState(Parcelable superState) {
             super(superState);
@@ -398,12 +401,14 @@ public abstract class BaseMultiSelectSpinner extends Spinner implements
         private SavedState(Parcel in) {
             super(in);
             selected = in.createBooleanArray();
+            items = in.createStringArrayList();
         }
 
         @Override
         public void writeToParcel(Parcel out, int flags) {
             super.writeToParcel(out, flags);
             out.writeBooleanArray(selected);
+            out.writeStringList(items);
         }
 
         public static final Parcelable.Creator<SavedState> CREATOR =
