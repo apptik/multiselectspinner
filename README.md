@@ -12,12 +12,12 @@ Find [the latest JARs][mvn] or grab via Maven:
 <dependency>
   <groupId>io.apptik.widget</groupId>
   <artifactId>multiselectspinner</artifactId>
-  <version>1.0.11</version>
+  <version>1.0.12</version>
 </dependency>
 ```
 or Gradle:
 ```groovy
-compile 'io.apptik.widget:multiselectspinner:1.0.11'
+compile 'io.apptik.widget:multiselectspinner:1.0.12'
 ```
 
 Downloads of the released versions are available in [Sonatype's `releases` repository][release].
