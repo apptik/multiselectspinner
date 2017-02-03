@@ -57,7 +57,11 @@ public class MainActivity extends ActionBarActivity {
                 })
                 .setAllCheckedText("All types")
                 .setAllUncheckedText("none selected")
-                .setSelectAll(false);
+                .setSelectAll(false)
+                .selectItem(0, true)
+                .selectItem(1, true)
+                .selectItem(2, true)
+        ;
 
         MultiSelectSpinner multiSelectSpinner2 = (MultiSelectSpinner) findViewById(R.id.multiselectSpinner2);
         MultiSelectSpinner multiSelectSpinner3 = (MultiSelectSpinner) findViewById(R.id.multiselectSpinner3);
@@ -81,6 +85,8 @@ public class MainActivity extends ActionBarActivity {
                 .setAllCheckedText("All types")
                 .setAllUncheckedText("none selected")
                 .setSelectAll(true)
+                //deselects item
+                .selectItem(2,false)
                 .setMinSelectedItems(1);
 
         multiSelectSpinner3
