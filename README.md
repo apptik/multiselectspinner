@@ -5,7 +5,7 @@ multiselectspinner
 
 Multi functional and selectable spinner for Android
 
-##Download
+## Download
 
 Find [the latest JARs][mvn] or grab via Maven:
 ```xml
